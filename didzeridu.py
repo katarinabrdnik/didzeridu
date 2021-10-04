@@ -1,5 +1,11 @@
 #res se bom potrudila to naredit čim bolj kul
 
-def nisem_ziher_ali_deluje(krompir):
-    for cima in krompir:
-        print(cima)
+class Izvajalec:
+    def __init__(self, izvajalec, album, leto_izida):
+        self.izvajalec = izvajalec
+        self.album = album
+        self.leto_izida = leto_izida
+
+    def dodaj_album(self, izvajalec, album):
+
+
