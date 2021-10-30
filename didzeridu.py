@@ -39,6 +39,20 @@ class Zbirka:
                 for vnos in self.vnosi
             ]
         }
-        with open(datoteka, "w", encoding="utf-8") as file:
-            json.dump(vnos_v_slovar, file, ensure_ascii=False, indent=4)
 #vnos se shrani v nabor oblike celoten_vnos = (vnos_izvajalca, vnos_albuma, vnos_zanra, leto_izida, cas_vnosa)
+
+    def shrani_stanje(self, datoteka):
+        with open(datoteka, "w", encoding="utf-8") as file:
+            json.dump(self.slovar_s_stanjem(), file, ensure_ascii=False, indent=4)
+
+    @classmethod
+    def nalozi_iz_slovarja(cls, slovar_s_stanjem):
+        zbirka = cls()
+        for vnos in slovar_s_stanjem["vnosi"]:
+            nov_vnos = zbirka.dodaj_vnos(vnos)
+        return zbirka
+
+    def nalozi_stanje(cls, datoteka):
+        with open(datoteka) as file:
+            slovar_s_stanjem = json.load(file)
+        return cls.nalozi_iz_slovarja(slovar_s_stanjem)

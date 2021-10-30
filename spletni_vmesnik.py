@@ -2,15 +2,26 @@ import bottle
 from didzeridu import Zbirka
 from datetime import datetime
 
-zbirka = Zbirka()
+
+DATOTEKA_S_STANJEM = "stanje.json"
+
+try:
+    zbirka = Zbirka()
+    zbirka.nalozi_stanje('stanje.json')
+except FileNotFoundError:
+    zbirka = Zbirka()
+
+def shrani_stanje():
+    zbirka.shrani_stanje('stanje.json')
+
 
 @bottle.get('/')
 def osnovni_zaslon():
-    return bottle.template('views/osnovna_stran.tpl')
+    return bottle.template('osnovna_stran.tpl')
 
-@bottle.get('/nov-vnos/')
+@bottle.post('/nov-vnos/')
 def dodaj_nov_vnos():
-    bottle.template('views/nov_vnos.tpl')
+    bottle.template('nov_vnos.tpl')
     izvajalec = bottle.request.forms.getunicode('izvajalec')
     album = bottle.request.forms.getunicode('album')
 #    zanri = bottle.request.forms['žanri']
