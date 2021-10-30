@@ -14,6 +14,9 @@ class Zbirka:
     def dodaj_vnos(self, vnos):
         self.vnosi.append(vnos)
 
+    def odstrani_vnos(self, vnos):
+        self.vnosi.remove(vnos)
+
     def seznam_izvajalcev(self):
         return [vnos[0] for vnos in self.vnosi]
 
@@ -23,7 +26,7 @@ class Zbirka:
     def seznam_vnosov(self):
         return self.vnosi
 
-    def shrani_podatke(self, datoteka): #da lahko shranim v json
+    def slovar_s_stanjem(self, datoteka):
         vnos_v_slovar = {
             "vnosi": [
                 {
