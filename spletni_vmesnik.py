@@ -8,14 +8,14 @@ from operator import itemgetter
 
 DATOTEKA_S_STANJEM = "stanje.json"
 
-try:
-    zbirka = Zbirka()
-    zbirka.nalozi_stanje('stanje.json')
-except FileNotFoundError:
-    zbirka = Zbirka()
+#try:
+#    Zbirka().nalozi_stanje(DATOTEKA_S_STANJEM)
+#except FileNotFoundError:
+#    zbirka = Zbirka()
 
-def shrani_stanje():
-    zbirka.shrani_stanje('stanje.json')
+#def shrani_stanje():
+#    zbirka.shrani_stanje(DATOTEKA_S_STANJEM)
+zbirka = Zbirka()
 
 @bottle.get('/')
 def osnovni_zaslon():
@@ -26,10 +26,11 @@ def dodaj_nov_vnos():
     izvajalec = bottle.request.forms.getunicode('izvajalec')
     album = bottle.request.forms.getunicode('album')
     datum = date.today().strftime("%d-%m-%Y")
-    zanri = bottle.request.forms.getunicode("zanri")
-    nov_vnos = (izvajalec, album, zanri, datum)
+    zanri = 'rock'
+    leto_izida = bottle.request.forms.getunicode('leto izida')
+    nov_vnos = (izvajalec, album, zanri, leto_izida, datum)
     zbirka.dodaj_vnos(nov_vnos)
-    shrani_stanje()
+    zbirka.shrani_stanje(DATOTEKA_S_STANJEM)
     bottle.redirect("/")
 
 

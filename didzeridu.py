@@ -1,15 +1,7 @@
 import json
 class Zbirka:
     def __init__(self):
-        self.izvajalci = []
-        self.albumi = []
         self.vnosi = []
-
-#    def dodaj_izvajalca(self, izvajalec):
-#        self.izvajalci.append(izvajalec)
-#
-#    def dodaj_album(self, album):
-#        self.albumi.append(album)
 
     def dodaj_vnos(self, vnos):
         self.vnosi.append(vnos)
@@ -26,7 +18,7 @@ class Zbirka:
     def seznam_vnosov(self):
         return self.vnosi
 
-    def slovar_s_stanjem(self):
+    def v_slovar(self):
         vnos_v_slovar = {
             "vnosi": [
                 {
@@ -41,6 +33,20 @@ class Zbirka:
         }
         return vnos_v_slovar
 #vnos se shrani v nabor oblike celoten_vnos = (vnos_izvajalca, vnos_albuma, vnos_zanra, leto_izida, cas_vnosa)
+    
+    @staticmethod
+    def iz_slovarja(slovar):
+        zbirka = Zbirka()
+        zbirka.vnosi = [
+            Zbirka.iz_slovarja(sl_vnosa) for sl_vnosa in slovar["vnosi"]
+        ]
+        return zbirka
+
+    def shrani_stanje(self, ime_datoteke):
+        with open(ime_datoteke, "w") as dat:
+            slovar = self.v_slovar()
+            json.dump(slovar, dat)
+
     @classmethod
     def slovar_v_nabor(cls, slovar, kljuc):
         zbirka = cls()
@@ -48,16 +54,13 @@ class Zbirka:
         seznam_naborov = [tuple(vnos.values()) for vnos in vnosi]
         return seznam_naborov
 
-    def shrani_stanje(self, datoteka):
-        with open(datoteka, "w", encoding="utf-8") as file:
-            json.dump(self.slovar_s_stanjem(), file, ensure_ascii=False, indent=4)
+    @staticmethod
+    def preberi_iz_datoteke(ime_datoteke):
+        with open(ime_datoteke) as dat:
+            slovar = json.load(dat)
+            return Zbirka.iz_slovarja(slovar)
 
-#    @classmethod
-#    def nalozi_iz_slovarja(cls, slovar_s_stanjem):
-#        zbirka = cls()
-#        for vnos in slovar_s_stanjem["vnosi"]:           
-#        return zbirka
-
+    @classmethod
     def nalozi_stanje(cls, datoteka):
         with open(datoteka) as file:
             slovar_s_stanjem = json.load(file)

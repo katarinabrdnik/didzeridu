@@ -4,15 +4,10 @@
     Tvoj najljubši program za beleženje zgodovine poslušanja. :)
   </blockquote>
 
-
-  <form action="/nov-vnos/" method="post">
-    <button type="submit">Nov vnos</button>
-  </form>
-
   <form action="/nov-vnos/" method="POST">
-    izvajalec: <input type="text" name="izvajalec">
-    album: <input type="text" name="album">
-    žanri: <input type="checkbox" name="zanr1">
+    Izvajalec: <input type="text" name="izvajalec"><br>
+    Album: <input type="text" name="album"><br>
+    Žanri: <input type="checkbox" name="zanr1">
            <label for="zanr1"> Rock</label><br>
            <input type="checkbox" name="zanr2">
            <label for="zanr2"> Metal</label><br>
@@ -44,7 +39,7 @@
            <label for="zanr15"> Govorjena beseda</label><br>
            <input type="checkbox" name="zanr16">
            <label for="zanr16"> Drugo</label><br>
-    leto izida: <input type="text" name="leto izida">
+    Leto izida: <input type="text" name="leto izida">
   <input type="submit" value="Dodaj!">
   </form>
 
