@@ -1,7 +1,7 @@
   <h1>Didžeridu</h1>
   <hr>
   <blockquote>
-    Tvoj najljubši program za beleženje zgodovine poslušanja. :)
+    Program za beleženje zgodovine poslušanja. :)
   </blockquote>
 
   <form action="/nov-vnos/" method="POST">
