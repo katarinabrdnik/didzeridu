@@ -1,20 +1,11 @@
 import bottle
 from didzeridu import Zbirka
-from datetime import datetime, date
-
-from itertools import groupby
-from operator import itemgetter
+from datetime import date
+from tabulate import tabulate
 
 
 DATOTEKA_S_STANJEM = "stanje.json"
 
-#try:
-#    Zbirka().nalozi_stanje(DATOTEKA_S_STANJEM)
-#except FileNotFoundError:
-#    zbirka = Zbirka()
-
-#def shrani_stanje():
-#    zbirka.shrani_stanje(DATOTEKA_S_STANJEM)
 zbirka = Zbirka()
 
 @bottle.get('/')
@@ -26,27 +17,24 @@ def dodaj_nov_vnos():
     izvajalec = bottle.request.forms.getunicode('izvajalec')
     album = bottle.request.forms.getunicode('album')
     datum = date.today().strftime("%d-%m-%Y")
-    zanri = 'rock'
+    zanri = ''
+    for checkbox in 'Rock', 'Metal', 'Folk', 'Hip hop', 'Alternativa', 'Pop', 'Eksperimentalna', \
+        'Jazz', 'R&B', 'Klasična', 'Blues', 'Elektronska', 'Plesna', 'Punk', 'Govorjena beseda', 'Drugo':
+        vrednost = bottle.request.forms.get(checkbox)
+        if vrednost:
+            zanri += f'{checkbox}, '
     leto_izida = bottle.request.forms.getunicode('leto izida')
     nov_vnos = (izvajalec, album, zanri, leto_izida, datum)
     zbirka.dodaj_vnos(nov_vnos)
     zbirka.shrani_stanje(DATOTEKA_S_STANJEM)
     bottle.redirect("/")
 
-
-#@bottle.get("/seznam-vnosov/")
-##def tabela_vnosov():
-#    moj_seznam_naborov = zbirka.nalozi_stanje(DATOTEKA_S_STANJEM)
-#    cel_html = []
-#    for name, rows in groupby(moj_seznam_naborov, itemgetter(0)):
-#        table = []
-#        for izvajalec, album, zanri, leto_izida, cas_vnosa in rows:
-#            table.append(
-#            f"<tr><td>{izvajalec}</td><td>{album}</td><td>{zanri}</td><td>{leto_izida}</td><td>{cas_vnosa}</td><td></tr>")
-#        table = "<table>\n{}\n</table>".format('\n'.join(table))
-#        cel_html.append(table)
-#    cel_html = "<html>\n{}\n</html>".format('\n'.join(cel_html))
-#    return cel_html
+@bottle.get("/seznam-vnosov/")
+def tabela_vnosov():
+    seznam = [['Izvajalec', 'Album', 'Žanri', 'Leto izida', 'Dan vnosa']]
+    for vnos in zbirka.seznam_vnosov():
+        seznam.append(list(vnos))
+    return tabulate(seznam, tablefmt='html')
 
 
 bottle.run(reloader=True, debug=True)

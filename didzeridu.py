@@ -47,21 +47,8 @@ class Zbirka:
             slovar = self.v_slovar()
             json.dump(slovar, dat)
 
-    @classmethod
-    def slovar_v_nabor(cls, slovar, kljuc):
-        zbirka = cls()
-        vnosi = slovar[kljuc]
-        seznam_naborov = [tuple(vnos.values()) for vnos in vnosi]
-        return seznam_naborov
-
     @staticmethod
     def preberi_iz_datoteke(ime_datoteke):
         with open(ime_datoteke) as dat:
             slovar = json.load(dat)
             return Zbirka.iz_slovarja(slovar)
-
-    @classmethod
-    def nalozi_stanje(cls, datoteka):
-        with open(datoteka) as file:
-            slovar_s_stanjem = json.load(file)
-        return cls.slovar_v_nabor(slovar_s_stanjem, "vnosi")
