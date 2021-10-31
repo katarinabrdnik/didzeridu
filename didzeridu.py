@@ -26,7 +26,7 @@ class Zbirka:
     def seznam_vnosov(self):
         return self.vnosi
 
-    def slovar_s_stanjem(self, datoteka):
+    def slovar_s_stanjem(self):
         vnos_v_slovar = {
             "vnosi": [
                 {
@@ -39,20 +39,26 @@ class Zbirka:
                 for vnos in self.vnosi
             ]
         }
+        return vnos_v_slovar
 #vnos se shrani v nabor oblike celoten_vnos = (vnos_izvajalca, vnos_albuma, vnos_zanra, leto_izida, cas_vnosa)
+    @classmethod
+    def slovar_v_nabor(cls, slovar, kljuc):
+        zbirka = cls()
+        vnosi = slovar[kljuc]
+        seznam_naborov = [tuple(vnos.values()) for vnos in vnosi]
+        return seznam_naborov
 
     def shrani_stanje(self, datoteka):
         with open(datoteka, "w", encoding="utf-8") as file:
             json.dump(self.slovar_s_stanjem(), file, ensure_ascii=False, indent=4)
 
-    @classmethod
-    def nalozi_iz_slovarja(cls, slovar_s_stanjem):
-        zbirka = cls()
-        for vnos in slovar_s_stanjem["vnosi"]:
-            nov_vnos = zbirka.dodaj_vnos(vnos)
-        return zbirka
+#    @classmethod
+#    def nalozi_iz_slovarja(cls, slovar_s_stanjem):
+#        zbirka = cls()
+#        for vnos in slovar_s_stanjem["vnosi"]:           
+#        return zbirka
 
     def nalozi_stanje(cls, datoteka):
         with open(datoteka) as file:
             slovar_s_stanjem = json.load(file)
-        return cls.nalozi_iz_slovarja(slovar_s_stanjem)
+        return cls.slovar_v_nabor(slovar_s_stanjem, "vnosi")
